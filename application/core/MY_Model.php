@@ -851,7 +851,6 @@ class MY_Model extends CI_Model {
 			if (is_array($this->validates))
 			{
 				$this->form_validation->set_rules($this->validates);
-
 				if ($this->form_validation->run() === TRUE)
 				{
 					return $data;
