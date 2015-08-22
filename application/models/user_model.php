@@ -1,5 +1,5 @@
 <?php
-  
+defined('BASEPATH') OR exit('No direct script access allowed');
 class User_model extends MY_Model { 
     public $primary_key = 'id';
     public $after_validation = array('check_something');
@@ -14,17 +14,18 @@ class User_model extends MY_Model {
         'reset_password_token' => ''
     );
     public $validates = array(
-        //no anda bien esto chequear
         array( 
             'field' => 'user_name', 
             'label' => 'Nombre de usuario',
             'rules' => 'required'
+            //'rules' => 'required|check_unique'
         )
     );
     public $timestamps = TRUE;
-    
+    /*public function check_unique(){
+        return true;
+    }*/
     public function check_something(){
-        var_dump($this);
     }
     
 }

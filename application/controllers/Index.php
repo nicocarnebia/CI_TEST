@@ -8,22 +8,17 @@ class Index extends CI_Controller {
             parent::__construct();
             $this->load->helper('url');     
         }   
-	
+	//this is the homepage
 	public function index()
 	{
             $this->load->model('user_model');
-            $users = $this->user_model->limit(5)->offset(0)->all();
-            
-            $u = $this->user_model->find(2);
-            var_dump($users);var_dump($u->user_name);
-           //this is the homepage
-            
-           /* 
+            /*$users = $this->user_model->limit(5)->offset(0)->all();
+            $u = $this->user_model->find(2);*/
             $user = $this->user_model->new_model(array(
-            'user_name' => 'Pepe',
+            'user_name' => 'Prueba2',
             'encrypted_password' => '123123123',
-            'name' => 'Prueba',
-            'dob' => '12-12-2015',
+            'name' => 'ss',
+            'dob' => '2015-12-12',
             'status' => Status::INACTIVE,
             'lastname' => 'Prueba',
             'auth_token' => '123123123123123123',
@@ -33,7 +28,8 @@ class Index extends CI_Controller {
                 echo "Guarda";
             }else{
                 echo "No guarda";
-            }*/
-            $this->load->view('welcome_message');
+                var_dump($user->get_validation_errors());
+            }
+            //$this->load->view('welcome_message');
 	}
 }

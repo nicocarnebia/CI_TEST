@@ -168,11 +168,10 @@ class CI_Form_validation {
 	{
 		// No reason to set rules if we have no POST data
 		// or a validation array has not been specified
-		if ($this->CI->input->method() !== 'post' && empty($this->validation_data))
+                if ($this->CI->input->method() !== 'post' && empty($this->validation_data))
 		{
 			return $this;
 		}
-
 		// If an array was passed via the first parameter instead of individual string
 		// values we cycle through it and recursively call this function.
 		if (is_array($field))
@@ -421,7 +420,6 @@ class CI_Form_validation {
 		{
 			return FALSE;
 		}
-
 		// Does the _field_data array containing the validation rules exist?
 		// If not, we look to see if they were assigned via a config file
 		if (count($this->_field_data) === 0)
@@ -490,7 +488,6 @@ class CI_Form_validation {
 
 		// Now we need to re-set the POST data with the new, processed data
 		$this->_reset_post_array();
-
 		return ($total_errors === 0);
 	}
 
@@ -1127,9 +1124,8 @@ class CI_Form_validation {
 	public function is_unique($str, $field)
 	{
 		sscanf($field, '%[^.].%[^.]', $table, $field);
-		return isset($this->CI->db)
-			? ($this->CI->db->limit(1)->get_where($table, array($field => $str))->num_rows() === 0)
-			: FALSE;
+                var_dump($this->CI);
+		return isset($this->CI->db)? ($this->CI->db->limit(1)->get_where($table, array($field => $str))->num_rows() === 0): FALSE;
 	}
 
 	// --------------------------------------------------------------------

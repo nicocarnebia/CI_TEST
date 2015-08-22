@@ -54,7 +54,7 @@ class MY_Model extends CI_Model {
 
 	// Validations
 	protected $validates = array();
-
+        protected $validation_errors = array();
 	// Logging
 	protected $logger = FALSE; // Log all database queries.
 
@@ -63,9 +63,6 @@ class MY_Model extends CI_Model {
 		parent::__construct();
 
 		$args = func_get_args();
-
-
-
 		// Save the database connection.
 		switch (func_num_args())
 		{
@@ -244,6 +241,7 @@ class MY_Model extends CI_Model {
 			// Save an existing record.
 			$this->connection->where($this->primary_key, $this->{$this->primary_key});
 			$result = $this->connection->update($this->table_name, $data);
+                        $this->validation_errors["database_error"]=$this->connection->error();
 			if ($this->logger) log_message('debug', $this->connection->last_query());
 		}
 		else
@@ -251,6 +249,7 @@ class MY_Model extends CI_Model {
 			// Insert a new record.
 			if ($this->timestamps) $data['created_at'] = date('Y-m-d H:i:s');
 			$result = $this->connection->insert($this->table_name, $data);
+                        $this->validation_errors["database_error"]=$this->connection->error();
 			if ($this->logger) log_message('debug', $this->connection->last_query());
 			$this->{$this->primary_key} = $this->connection->insert_id();
 			if ($this->timestamps) $this->created_at = $data['created_at'];
@@ -318,7 +317,8 @@ class MY_Model extends CI_Model {
 			$data[$key] = $this->{$key};
 		}
 
-		$result = $this->connection->update($this->table_name, $data);
+                $result = $this->connection->update($this->table_name, $data);
+                $this->validation_errors["database_error"]=$this->connection->error();
 		if ($this->logger) log_message('debug', $this->connection->last_query());
 		foreach ($this->columns as $key => $val)
 		{
@@ -847,7 +847,7 @@ class MY_Model extends CI_Model {
 			}
 
 			$this->load->library('form_validation');
-
+                            
 			if (is_array($this->validates))
 			{
 				$this->form_validation->set_rules($this->validates);
@@ -857,6 +857,7 @@ class MY_Model extends CI_Model {
 				}
 				else
 				{
+                                        $this->validation_errors=$this->form_validation->error_array();
 					return FALSE;
 				}
 			}
@@ -867,7 +868,8 @@ class MY_Model extends CI_Model {
 					return $data;
 				}
 				else
-				{
+				{    
+                                        $this->validation_errors=$this->form_validation->error_array();
 					return FALSE;
 				}
 			}
@@ -1005,6 +1007,13 @@ class MY_Model extends CI_Model {
 		$this->offset_value = 0;
 		$this->before_find = array();
 	}
+        /**
+         * Returns validation errors
+         * @return array
+         */
+        public function get_validation_errors(){
+            return $this->validation_errors;
+        }
 
 
 }
