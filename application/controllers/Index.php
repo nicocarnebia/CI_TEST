@@ -12,9 +12,26 @@ class Index extends CI_Controller {
 	public function index()
 	{
             $this->load->model('user_model');
+            $this->load->model('character_model');
+            /*$char=$this->character_model->new_model(array(
+            'user_id' => 2,
+            'class_id' => '1',
+            'name' => 'Char1'));
+            if($char->save()){
+                echo "Guarda";
+            }else{
+                echo "No guarda";
+                var_dump($char->get_validation_errors());
+            }*/
+            $users=$this->user_model->includes("characters")->all();
+            foreach ($users as $u) {
+                foreach ($u->characters as $c) {
+                    var_dump($c->name);
+                }
+            }
             /*$users = $this->user_model->limit(5)->offset(0)->all();
             $u = $this->user_model->find(2);*/
-            $user = $this->user_model->new_model(array(
+            /*$user = $this->user_model->new_model(array(
             'user_name' => 'Prueba2',
             'encrypted_password' => '123123123',
             'name' => 'ss',
@@ -29,7 +46,7 @@ class Index extends CI_Controller {
             }else{
                 echo "No guarda";
                 var_dump($user->get_validation_errors());
-            }
+            }*/
             //$this->load->view('welcome_message');
 	}
 }

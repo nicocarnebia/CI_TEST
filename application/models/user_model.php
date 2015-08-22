@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class User_model extends MY_Model { 
+    public $has_many = array('characters');
     public $primary_key = 'id';
     public $after_validation = array('check_something');
     public $columns = array(
